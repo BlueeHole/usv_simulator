@@ -1,9 +1,0 @@
-{
-	"python.autoComplete.extraPaths": [
-		"/home/mofei/1_ROS/Swarm-Formation/devel/lib/python3/dist-packages",
-		"/home/mofei/1_ROS/navigation_stack_ws/devel/lib/python3/dist-packages",
-		"/home/mofei/1_ROS/gazebo2rviz_ws/devel/lib/python3/dist-packages",
-		"/home/mofei/1_ROS/sjtu_mf_ws/devel/lib/python3/dist-packages",
-		"/opt/ros/noetic/lib/python3/dist-packages"
-	]
-}
