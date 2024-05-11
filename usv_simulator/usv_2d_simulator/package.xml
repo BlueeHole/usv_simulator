@@ -1,0 +1,26 @@
+<package>
+  <version>0.0.0</version>
+  <name>usv_2d_simulator</name>
+  <description>
+
+		usv_2d_simulator
+
+  </description>
+
+  <maintainer email="todo@todo.todo">Kartik Mohta</maintainer>
+  <license>BSD</license>
+  <url>http://ros.org/wiki/usv_2d_simulator</url>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <build_depend>roscpp</build_depend>
+  <build_depend>util_msgs</build_depend>
+  <build_depend>uav_utils</build_depend>
+  <build_depend>cmake_utils</build_depend>
+
+  <run_depend>roscpp</run_depend>
+  <run_depend>util_msgs</run_depend>
+  <run_depend>uav_utils</run_depend>
+  <run_depend>cmake_utils</run_depend>
+
+</package>

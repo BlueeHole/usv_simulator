@@ -1,0 +1,38 @@
+<launch>  
+   <arg name="init_x" value="-4"/>
+   <arg name="init_y" value="0"/>
+   <arg name="init_yaw" value="0"/>
+
+   <!-- Simulator -->
+   <node pkg="usv_2d_simulator"
+         type="usv_simulator"
+         name="usv_simulator"
+         output="screen">
+     <param name="rate/odom" value="100.0"/>
+
+     <param name="simulator/init_state_x" value="$(arg init_x)"/>
+     <param name="simulator/init_state_y" value="$(arg init_y)"/>
+	 	 <param name="simulator/init_state_yaw" value="$(arg init_yaw)"/>
+     <remap from="~odom" to="/sim/odom"/>
+     <remap from="~cmd" to="/so2_cmd"/>
+     <remap from="~imu" to="/sim/imu"/>     
+   </node>
+
+   <!--node pkg="so3_control" name="control_example" type="control_example" output="screen"/-->
+ 
+   <!-- Visualization -->
+  <node pkg="odom_visualization" name="odom_visualization" type="odom_visualization" output="screen">
+        <remap from="~odom" to="/sim/odom"/>
+        <param name="color/a" value="0.5"/>    
+        <param name="color/r" value="1.0"/>        
+        <param name="color/g" value="0.0"/>        
+        <param name="color/b" value="0.0"/>       
+        <param name="covariance_scale" value="100.0"/>       
+        <param name="robot_scale" value="1.0"/>
+        <param name="tf45" value="true"/>
+  </node>
+
+   <node name="rviz" pkg="rviz" type="rviz"
+      args="-d $(find usv_2d_simulator)/config/rviz.rviz"
+      />
+ </launch>
