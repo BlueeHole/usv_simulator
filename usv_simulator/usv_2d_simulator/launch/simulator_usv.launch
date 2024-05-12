@@ -1,7 +1,7 @@
 <launch>  
-   <arg name="init_x" value="-4"/>
-   <arg name="init_y" value="0"/>
-   <arg name="init_yaw" value="0"/>
+	<arg name="map_size_x" value="70.0"/>
+	<arg name="map_size_y" value="30.0"/>
+	<arg name="map_size_z" value=" 3.0"/>
 
    <!-- Simulator -->
    <node pkg="usv_2d_simulator"
@@ -18,19 +18,42 @@
      <remap from="~imu" to="/sim/imu"/>     
    </node>
 
-   <!--node pkg="so3_control" name="control_example" type="control_example" output="screen"/-->
- 
-   <!-- Visualization -->
-  <node pkg="odom_visualization" name="odom_visualization" type="odom_visualization" output="screen">
-        <remap from="~odom" to="/sim/odom"/>
-        <param name="color/a" value="0.5"/>    
-        <param name="color/r" value="1.0"/>        
-        <param name="color/g" value="0.0"/>        
-        <param name="color/b" value="0.0"/>       
-        <param name="covariance_scale" value="100.0"/>       
-        <param name="robot_scale" value="1.0"/>
-        <param name="tf45" value="true"/>
-  </node>
+    <!-- map -->
+    <node pkg ="map_generator" name ="random_forest" type ="random_forest" output = "screen">    
+			<param name="map/x_size"     value="34" />
+			<param name="map/y_size"     value="15" />
+			<param name="map/z_size"     value="3.0" />
+			<param name="map/resolution" value="0.1"/>        
+			<param name="ObstacleShape/seed" value="1"/>
+			
+			<param name="map/obs_num"    value="60"/>
+			<param name="ObstacleShape/lower_rad" value="0.5"/>
+			<param name="ObstacleShape/upper_rad" value="0.5"/>
+			<param name="ObstacleShape/lower_hei" value="2.0"/>
+			<param name="ObstacleShape/upper_hei" value="3.0"/>        
+
+			<param name="map/circle_num" value="20"/>        
+			<param name="ObstacleShape/radius_l" value="1.0"/>        
+			<param name="ObstacleShape/radius_h" value="1.2"/>        
+			<param name="ObstacleShape/z_l" value="0.7"/>        
+			<param name="ObstacleShape/z_h" value="3.0"/>        
+			<param name="ObstacleShape/theta" value="0.5"/>        
+	
+			<param name="pub_rate"   value="1.0"/>  
+			<param name="min_distance" value="0.8"/>         
+		</node>
+
+		<!-- use simulator -->
+    <include file="$(find ego_planner)/launch/simulator.xml">
+			<arg name="drone_id" value="$(arg drone_id)"/>
+			<arg name="map_size_x_" value="$(arg map_size_x)"/>
+			<arg name="map_size_y_" value="$(arg map_size_y)"/>
+			<arg name="map_size_z_" value="$(arg map_size_z)"/>
+			<arg name="init_x_" value="$(arg init_x)"/>
+			<arg name="init_y_" value="$(arg init_y)"/>
+			<arg name="init_z_" value="$(arg init_z)"/>
+			<arg name="odometry_topic" value="$(arg odom_topic)" />
+	</include>
 
    <node name="rviz" pkg="rviz" type="rviz"
       args="-d $(find usv_2d_simulator)/config/rviz.rviz"

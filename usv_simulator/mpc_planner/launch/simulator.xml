@@ -1,0 +1,73 @@
+<launch>
+  <arg name="init_x_"/>
+  <arg name="init_y_"/>
+  <arg name="init_yaw_"/> 
+  <arg name="obj_num" value="1" />
+  <arg name="map_size_x_"/>
+  <arg name="map_size_y_"/>
+  <arg name="map_size_z_"/>
+  <arg name="c_num"/>
+  <arg name="p_num"/>
+  <arg name="min_dist"/>
+  <arg name="odometry_topic"/>
+  <arg name="drone_id"/>
+  
+  <!-- <node pkg="poscmd_2_odom" name="drone_$(arg drone_id)_poscmd_2_odom" type="poscmd_2_odom" output="screen">
+        <param name="init_x" value="$(arg init_x_)"/>
+        <param name="init_y" value="$(arg init_y_)"/>
+        <param name="init_yaw" value="$(arg init_yaw_)"/>
+        <remap from="~command" to="drone_$(arg drone_id)_planning/pos_cmd"/>
+        <remap from="~odometry" to="drone_$(arg drone_id)_$(arg odometry_topic)"/>
+  </node> -->
+  
+   <!-- Simulator -->
+   <node pkg="usv_2d_simulator"
+         type="usv_simulator"
+         name="drone_$(arg drone_id)_usv_simulator"
+         output="screen">
+     <param name="rate/odom" value="100.0"/>
+
+     <param name="simulator/init_state_x" value="$(arg init_x_)"/>
+     <param name="simulator/init_state_y" value="$(arg init_y_)"/>
+	 	 <param name="simulator/init_state_yaw" value="$(arg init_yaw_)"/>
+     <remap from="~imu" to="drone_$(arg drone_id)/sim/imu"/>
+		 <!-- <remap from="~odom" to="drone_$(arg drone_id)_visual_slam/odom"/> -->
+		 <remap from="~odom" to="drone_$(arg drone_id)_$(arg odometry_topic)"/>
+		 <remap from="~cmd" to="drone_$(arg drone_id)_so2_cmd"/>
+		 <remap from="~force_disturbance" to="drone_$(arg drone_id)_force_disturbance"/>    
+		 <remap from="~moment_disturbance" to="drone_$(arg drone_id)_moment_disturbance"/>        
+   </node>
+
+  <node pkg="odom_visualization" name="drone_$(arg drone_id)_odom_visualization" type="odom_visualization" output="screen">
+				<!-- <remap from="~odom" to="drone_$(arg drone_id)_visual_slam/odom"/> -->
+		 		<remap from="~odom" to="drone_$(arg drone_id)_$(arg odometry_topic)"/>
+        <param name="color/a" value="1.0"/>    
+        <param name="color/r" value="0.0"/>        
+        <param name="color/g" value="0.0"/>        
+        <param name="color/b" value="0.0"/>       
+        <param name="covariance_scale" value="100.0"/>       
+        <param name="robot_scale" value="1.0"/>
+        <param name="tf45" value="false"/>
+        <param name="drone_id" value="drone_id"/>
+  </node>
+
+  <node pkg="local_sensing_node" type="pcl_render_node" name="drone_$(arg drone_id)_pcl_render_node" output="screen">
+        <rosparam command="load" file="$(find local_sensing_node)/params/camera.yaml" />
+        <param name="sensing_horizon"  value="5.0" />
+        <param name="sensing_rate"     value="30.0"/>
+        <param name="estimation_rate"  value="30.0"/>
+
+        <param name="map/x_size"     value="$(arg map_size_x_)"/>
+        <param name="map/y_size"     value="$(arg map_size_y_)"/>
+        <param name="map/z_size"     value="$(arg map_size_z_)"/>
+
+        <remap from="~global_map" to="/map_generator/global_cloud"/>
+        <remap from="~odometry"   to="/drone_$(arg drone_id)_$(arg odometry_topic)"/>
+				<!-- 这个话题发布的是局部看到的点云（map系下，但实际好像就是world系，先发布一个恒等变换，还不确定） -->
+				<!-- 是被grid_map所用，advance.xml里有重映射remap from="~grid_map/cloud" to this.
+					另外值得注意的是，整个程序都没有tf。估计话题发布的数据都是在全局系下的。
+				-->
+        <remap from="~pcl_render_node/cloud"   to="/drone_$(arg drone_id)_pcl_render_node/cloud"/>
+  </node>
+
+</launch>

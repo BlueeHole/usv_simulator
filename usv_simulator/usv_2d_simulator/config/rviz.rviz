@@ -135,6 +135,36 @@ Visualization Manager:
       Radius: 0.100000001
       Reference Frame: <Fixed Frame>
       Value: true
+      # 地图
+    - Alpha: 0.15000000596046448
+      Autocompute Intensity Bounds: true
+      Autocompute Value Bounds:
+        Max Value: 2.9000000953674316
+        Min Value: 0
+        Value: false
+      Axis: Z
+      Channel Name: intensity
+      Class: rviz/PointCloud2
+      Color: 198; 198; 198
+      Color Transformer: FlatColor
+      Decay Time: 0
+      Enabled: true
+      Invert Rainbow: false
+      Max Color: 255; 255; 255
+      Min Color: 0; 0; 0
+      Name: simulation_map
+      Position Transformer: XYZ
+      Queue Size: 10
+      Selectable: true
+      Size (Pixels): 3
+      Size (m): 0.10000000149011612
+      Style: Flat Squares
+      Topic: /map_generator/global_cloud
+      Unreliable: false
+      Use Fixed Frame: true
+      Use rainbow: true
+      Value: true
+
   Enabled: true
   Global Options:
     Background Color: 89; 89; 89

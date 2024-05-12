@@ -3,7 +3,7 @@
  * @version        : 
  * @Author         : Murphy
  * @Date           : 2024-05-10 15:57
- * @LastEditTime   : 2024-05-11 19:01
+ * @LastEditTime   : 2024-05-11 19:41
 *******************************************************************/
 #include "usv_simulator/USV.h"
 #include <ros/ros.h>
@@ -99,7 +99,6 @@ void USV::operator()(const USV::InternalState& x, USV::InternalState& dxdt,
   acc_ = v_dot;
 
   tau_dot = (input_ - cur_state.tau) / motor_time_constant_;
-	ROS_INFO("input: %f %f %f", input_(0), input_(1), input_(2));
 
   for (int i = 0; i < 3; i++) {
     dxdt[0 + i] = x_dot(i);

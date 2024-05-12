@@ -3,7 +3,7 @@
  * @version        : 
  * @Author         : Murphy
  * @Date           : 2024-05-10 21:30
- * @LastEditTime   : 2024-05-11 19:00
+ * @LastEditTime   : 2024-05-12 13:12
 *******************************************************************/
 #include <nav_msgs/Odometry.h>
 #include <util_msgs/SO2Command.h>
@@ -144,8 +144,8 @@ int main(int argc, char** argv) {
       if (std::isnan(control.tau[i]))
         control.tau[i] = last.tau[i];
     }
-		ROS_WARN("while control: tau.x = %f, tau.y = %f, tau.z = %f", control.tau[0],
-					 control.tau[1], control.tau[2]);
+		// ROS_WARN("while control: tau.x = %f, tau.y = %f, tau.z = %f", control.tau[0],
+		// 			 control.tau[1], control.tau[2]);
     usv.setInput(control.tau[0], control.tau[1], control.tau[2]);
     usv.setExternalForce(disturbance.f);
     usv.setExternalMoment(disturbance.m);
